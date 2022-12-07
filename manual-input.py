@@ -2,6 +2,7 @@ import sys
 import pandas as pd
 import numpy as np
 import os
+import input
 
 # Visualization
 import matplotlib.pyplot as plt
@@ -287,92 +288,11 @@ cr = pd.DataFrame(cr).transpose()
 
 # Manual input
 # Enter values into list
-text_sample = ["We have a record 9.3 million job openings in the U.S.", "You can vote below the age of 18",
-               "Hillary Clinton won presidency"]
+text_sample = input.input_list
 df = pd.DataFrame(text_sample, columns=['text'])
 df2 = df.copy()
 
 text_clf.predict(text_sample)
-
-# """## **Input (scraped)**"""
-#
-# page = ""
-#
-# # Type of news Input statement
-# # Try and except to make sure user gives an integer value
-# try:
-#     ton = int(input(
-#         "What type of news to input into the model?:\n1: True\n2: Mostly True\n3: Half True\n4: Barely True\n5: False\n6: Extremely False\n"))
-# except ValueError:
-#     print("Enter a number!")
-# if ton == 1:
-#     page = "true"
-# elif ton == 2:
-#     page = 'mostly-true'
-# elif ton == 3:
-#     page = 'half-true'
-# elif ton == 4:
-#     page = 'barely-true'
-# elif ton == 5:
-#     page = 'false'
-# elif ton == 6:
-#     page = "pants-fire"
-# else:
-#     print("Not valid!")
-#
-# # Append the sub-url that the user choses to the parent url
-#
-# url = 'https://www.politifact.com/factchecks/list/?ruling=' + str(page)
-#
-# print("Data source: " + url)
-#
-#
-# def getdata(url):
-#     r = requests.get(url)
-#     return r.text
-#
-#
-# page = getdata(url)
-# soup = BeautifulSoup(page, "html.parser")
-#
-# data = ''
-# lst = []
-#
-# # Finds all the text that are located in the element that the claims are located
-# for data in soup.find_all("div", attrs={"class": "m-statement__quote"}):
-#     lst.append(data.get_text())
-#
-# new_list = [s.replace("\n", "") for s in lst]
-# res = []
-#
-# # Filters out duplicates
-# for i in new_list:
-#     if i not in res:
-#         res.append(i)
-#
-# # Makes the list that will show the values of the truth in the DataFrame
-# if ton == 1:
-#     cat = ['true']
-# elif ton == 2:
-#     cat = ['mostly true']
-# elif ton == 3:
-#     cat = ['half true']
-# elif ton == 4:
-#     cat = ['barely true']
-# elif ton == 5:
-#     cat = ['false']
-# elif ton == 6:
-#     cat = ["extremely false"]
-# else:
-#     print("invalid")
-# cat *= len(res)  #
-#
-# # Converts the lists of text and truths of that text into a DataFrame
-# d = {'text': res, 'truth': cat}
-# df = pd.DataFrame(data=d)
-#
-# # Creates a copy, so we can access the original later to display
-# df1 = df.copy()
 
 """# **Prediction**
 
@@ -431,63 +351,6 @@ df['filtered'] = df['text_wo_punct_wo_stopwords'].apply(lambda x: remove_quotema
 df["joined"] = df["filtered"]
 df = df.drop(["text_wo_contra", "text_wo_punct", "text_wo_punct_wo_stopwords", "filtered"], axis=1)
 df.head(10)
-
-# """## **Model, Vectorization, Prediction, and Confusion Matrix** (Scraped)"""
-#
-# tmp = df["joined"]
-#
-# text_sample = pd.Series.tolist(tmp)  # Makes the sample text a list, so it can be accessed
-#
-# sample_predict = text_clf.predict(text_sample)
-#
-# # The predicted values become a list, so they can be inputted into the DataFrame
-#
-# df1['predicted'] = sample_predict.tolist()
-#
-# df1.head(6)
-#
-# df3 = df1.copy()
-#
-# # Replaces the values with their corresponding binary value
-# df3['truth'].mask(df3['truth'] == 'false', 0, inplace=True)
-# df3['truth'].mask(df3['truth'] == 'barely true', 0, inplace=True)
-# df3['truth'].mask(df3['truth'] == 'extremely false', 0, inplace=True)
-# df3['truth'].mask(df3['truth'] == 'half true', 0, inplace=True)
-# df3['truth'].mask(df1['truth'] == 'true', 1, inplace=True)
-# df3['truth'].mask(df1['truth'] == 'mostly true', 1, inplace=True)
-# a = df3['truth'].tolist()
-# b = df3['predicted'].tolist()
-#
-# true_negative = 0
-# false_negative = 0
-# true_positive = 0
-# false_positive = 0
-#
-# # Gets the values of the confusion matrix
-# for i, j in zip(a, b):
-#     if i == j and i == 0:
-#         true_negative += 1
-#     elif i == j and i == 1:
-#         true_positive += 1
-#     elif i != j and j == 0:
-#         false_negative += 1
-#     elif i != j and j == 1:
-#         false_positive += 1
-#
-# # Creates the blank confusion matrix
-# matrix = pd.DataFrame(columns=['negative', 'positive'], index=['negative', 'positive'])
-#
-# # Sets the values of the previous cell to their correct position on the matrix
-# matrix['negative']['negative'] = true_negative
-# matrix['positive']['positive'] = true_positive
-# matrix['negative']['positive'] = false_negative
-# matrix['positive']['negative'] = false_positive
-#
-# # NOTE: Columns is predicted and indexs are actual value
-#
-# df1['predicted'].mask(df1['predicted'] == 0, 'false', inplace=True)
-# df1['predicted'].mask(df1['predicted'] == 1, 'true', inplace=True)
-# df1.head()
 
 """##  **Model, Vectorization, Prediction** (Manual)"""
 
